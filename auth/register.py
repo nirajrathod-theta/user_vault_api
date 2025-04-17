@@ -1,4 +1,3 @@
-from fastapi import Depends, HTTPException
 from uuid import uuid4
 from pydantic import BaseModel, EmailStr
 from base_models import BaseResponse
@@ -43,6 +42,10 @@ async def register(request: RegisterRequest, db: Session) -> RegisterResponse:
     db.refresh(new_user)
 
     data = to_model(RegisterResponseData, new_user.__dict__, exclude_fields={"password"})    
-    response = RegisterResponse(code=201, success=True, message=f"Welcome {request.name}!", data=data)
     
-    return response
+    return RegisterResponse(
+        code=201, 
+        success=True, 
+        message=f"Welcome {request.name}!", 
+        data=data
+    )
